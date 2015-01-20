@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import ua.pp.kitson.trf.pool.RocketPool;
 import ua.pp.kitson.trf.rockets.FirstStageRocket;
 import ua.pp.kitson.trf.utils.Constants;
 import ua.pp.kitson.trf.utils.WorldUtil;
@@ -33,8 +34,6 @@ public class ThrRealFireworks extends ApplicationAdapter {
     Viewport viewport;
     OrthographicCamera camera;
 	SpriteBatch batch;
-//	Texture img;
-    private Body body;
     private ParticleEffect particleEffect;
     private FirstStageRocket rocket;
 
@@ -44,11 +43,7 @@ public class ThrRealFireworks extends ApplicationAdapter {
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
 		batch = new SpriteBatch();
-        rocket = WorldUtil.makeFirstStageRocket();
-
-
-        
-//		img = new Texture("badlogic.jpg");
+        rocket = (FirstStageRocket) RocketPool.getInstance().activateRocket();
 	}
 
 	@Override
@@ -56,7 +51,7 @@ public class ThrRealFireworks extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-        rocket.drawEffect(batch);
+        RocketPool.getInstance().draw(batch);
 		batch.end();
         world.step(1/60f, 6, 2);
 	}
@@ -64,5 +59,6 @@ public class ThrRealFireworks extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height,true);
+        RocketPool.getInstance().activateRocket();
     }
 }
