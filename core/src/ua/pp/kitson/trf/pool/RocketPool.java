@@ -1,10 +1,13 @@
 package ua.pp.kitson.trf.pool;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashSet;
 
 import ua.pp.kitson.trf.rockets.Rocket;
+import ua.pp.kitson.trf.rockets.RocketColor;
+import ua.pp.kitson.trf.rockets.RocketType;
 import ua.pp.kitson.trf.utils.WorldUtil;
 
 /**
@@ -17,6 +20,7 @@ public class RocketPool {
     private static HashSet<Rocket> free = new HashSet<>();
     private static HashSet<Rocket> action = new HashSet<>();
     private static RocketPool INSTANCE = null;
+    private HashSet<Rocket> finished = new HashSet<>();
 
     private RocketPool() {
 
@@ -29,14 +33,18 @@ public class RocketPool {
         return INSTANCE;
     }
 
-    public synchronized Rocket activateRocket() {
+    public synchronized Rocket activateRocket(Vector2 position, Vector2 speed,RocketType rocketType, RocketColor rocketColor) {
         Rocket rocket;
         if (!free.isEmpty()) {
             rocket = free.iterator().next();
             free.remove(rocket);
+            if (!rocket.checkParam(rocketType,rocketColor)){
+                rocket = WorldUtil.makeRocket(rocketType,rocketColor);
+            }
         } else {
-            rocket = WorldUtil.makeFirstStageRocket();
+            rocket = WorldUtil.makeRocket(rocketType,rocketColor);
         }
+        rocket.setParams(position, speed);
         action.add(rocket);
         return rocket;
 
@@ -54,6 +62,14 @@ public class RocketPool {
     public void draw(SpriteBatch batch) {
         for (Rocket rocket : action) {
             rocket.drawEffect(batch);
+            if (rocket.checkToFinish()) {
+                finished.add(rocket);
+            }
+        }
+        if (!finished.isEmpty()) {
+            action.removeAll(finished);
+            free.addAll(finished);
+            finished.clear();
         }
     }
 }

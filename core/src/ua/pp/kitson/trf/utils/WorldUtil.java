@@ -10,6 +10,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import ua.pp.kitson.trf.rockets.FirstStageRocket;
 import ua.pp.kitson.trf.rockets.Rocket;
+import ua.pp.kitson.trf.rockets.RocketColor;
+import ua.pp.kitson.trf.rockets.RocketType;
+import ua.pp.kitson.trf.rockets.SecondStageRocket;
 
 /**
  * Created by serhii on 1/17/15.
@@ -22,16 +25,11 @@ public class WorldUtil {
         return world;
     }
 
-    public static FirstStageRocket makeFirstStageRocket() {
-        FirstStageRocket rocket = new FirstStageRocket();
-        return (FirstStageRocket) makeObject(rocket);
-    }
-
     public static Body createBody(BodyDef bodyDef) {
         return world.createBody(bodyDef);
     }
 
-    public static Rocket makeObject(Rocket rocket) {
+    public static Rocket makeObject(Rocket rocket, RocketType rocketType, RocketColor rocketColor) {
 
         //make bodyDef, body and particles
         BodyDef bodyDef = new BodyDef();
@@ -41,8 +39,8 @@ public class WorldUtil {
         bodyDef.active = true;
         bodyDef.allowSleep = true;
         bodyDef.linearDamping = 0.01f;
-        bodyDef.position.set(Constants.CANNON_X, Constants.CANNON_Y);
-        bodyDef.linearVelocity.set(Constants.SHOOT_VELOCITY);
+        //bodyDef.position.set(Constants.CANNON_X, Constants.CANNON_Y);
+        //bodyDef.linearVelocity.set(Constants.SHOOT_VELOCITY);
         Body body = createBody(bodyDef);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.01f);
@@ -54,10 +52,39 @@ public class WorldUtil {
         circleShape.dispose();
 
         ParticleEffect particleEffect = new ParticleEffect();
-        particleEffect.load(Gdx.files.internal("effects/little.p"), Gdx.files.internal("effects"));
+        String asset;
+        switch (rocketColor) {
+            case WHITE:
+                asset = "effects/little.p";break;
+            case YELLOW:
+                asset = "effects/little1.p";break;
+            case BLUE:
+                asset = "effects/little2.p";break;
+            default:
+                throw new RuntimeException("Wrong color type");
+        }
+        particleEffect.load(Gdx.files.internal(asset), Gdx.files.internal("effects"));
         particleEffect.start();
+
+        body.setUserData(new Object[]{rocketType, rocketType});
 
         rocket.setData(body, particleEffect);
         return rocket;
+    }
+
+
+    public static Rocket makeRocket(RocketType rocketType, RocketColor rocketColor)  {
+        Rocket rocket;
+        switch (rocketType){
+            case FIRST:
+                rocket = new FirstStageRocket();
+            break;
+            case SECOND:
+                rocket = new SecondStageRocket();
+            break;
+            default:
+                throw new RuntimeException("Wrong rocket type");
+        }
+        return makeObject(rocket, rocketType, rocketColor);
     }
 }

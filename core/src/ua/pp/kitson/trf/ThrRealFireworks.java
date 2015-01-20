@@ -5,11 +5,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ua.pp.kitson.trf.pool.RocketPool;
+import ua.pp.kitson.trf.rockets.RocketColor;
+import ua.pp.kitson.trf.rockets.RocketType;
 import ua.pp.kitson.trf.utils.Constants;
 import ua.pp.kitson.trf.utils.WorldUtil;
 
@@ -31,7 +35,7 @@ public class ThrRealFireworks extends ApplicationAdapter {
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         batch = new SpriteBatch();
-        RocketPool.getInstance().activateRocket();
+        RocketPool.getInstance().activateRocket(new Vector2(Constants.CANNON_X,Constants.CANNON_Y),Constants.SHOOT_VELOCITY, RocketType.FIRST, RocketColor.WHITE);
     }
 
     @Override
@@ -47,6 +51,6 @@ public class ThrRealFireworks extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        RocketPool.getInstance().activateRocket();
+        RocketPool.getInstance().activateRocket(new Vector2(Constants.CANNON_X+ MathUtils.random(Constants.WORLD_WIDTH/2),Constants.CANNON_Y),Constants.SHOOT_VELOCITY, RocketType.SECOND,RocketColor.YELLOW);
     }
 }
