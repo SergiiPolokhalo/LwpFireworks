@@ -11,5 +11,6 @@ public interface Constants {
     Vector2 GRAVITY = new Vector2(0, -10);
     float CANNON_X = 10f;
     float CANNON_Y = 10f;
+    float WORLD_STEP = 1/60f;
     Vector2 SHOOT_VELOCITY = new Vector2(20, 100);
 }

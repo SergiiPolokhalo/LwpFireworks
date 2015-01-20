@@ -40,7 +40,7 @@ public class FirstStageRocket implements Rocket {
     public void drawEffect(SpriteBatch batch) {
         for (ParticleEmitter emitter : this.particleEffect.getEmitters()){
             emitter.setPosition(body.getPosition().x, body.getPosition().y);
-            emitter.draw(batch, 1/60f);
+            emitter.draw(batch,Constants.WORLD_STEP);
             if (emitter.isComplete()){
                 emitter.start();
             }
