@@ -18,11 +18,6 @@ public class FirstStageRocket implements Rocket {
     protected RocketColor rocketColor;
 
     @Override
-    public boolean isBlowable() {
-        return false;
-    }
-
-    @Override
     public boolean checkToFinish() {
         if (body != null) {
             float y = body.getPosition().y;
@@ -32,11 +27,6 @@ public class FirstStageRocket implements Rocket {
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean readyToClean() {
-        return checkToFinish();
     }
 
     @Override

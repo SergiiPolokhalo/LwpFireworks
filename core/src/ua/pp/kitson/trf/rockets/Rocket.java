@@ -9,11 +9,8 @@ import com.badlogic.gdx.physics.box2d.Body;
  * Created by serhii on 1/16/15.
  */
 public interface Rocket {
-    boolean isBlowable();
 
     boolean checkToFinish();
-
-    boolean readyToClean();
 
     void drawEffect(SpriteBatch batch);
 
