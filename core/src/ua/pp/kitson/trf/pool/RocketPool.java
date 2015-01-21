@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArraySet;
+//import java.util.concurrent.
 
 import ua.pp.kitson.trf.rockets.Rocket;
 import ua.pp.kitson.trf.rockets.RocketColor;
@@ -17,10 +19,13 @@ import ua.pp.kitson.trf.utils.WorldUtil;
  * Created by serhii on 1/20/15.
  */
 public class RocketPool {
-    private static HashSet<Rocket> free = new HashSet<>();
-    private static HashSet<Rocket> action = new HashSet<>();
+    CopyOnWriteArraySet<Rocket> free = new CopyOnWriteArraySet<>();
+    CopyOnWriteArraySet<Rocket> action = new CopyOnWriteArraySet<>();
+    CopyOnWriteArraySet<Rocket> finished = new CopyOnWriteArraySet<>();
+//    private static HashSet<Rocket> free = new HashSet<>();
+//    private static HashSet<Rocket> action = new HashSet<>();
     private static RocketPool INSTANCE = null;
-    private HashSet<Rocket> finished = new HashSet<>();
+//    private HashSet<Rocket> finished = new HashSet<>();
 
     private RocketPool() {
 
@@ -33,7 +38,10 @@ public class RocketPool {
         return INSTANCE;
     }
 
-    public synchronized Rocket activateRocket(Vector2 position, Vector2 speed,RocketType rocketType, RocketColor rocketColor) {
+    public synchronized Rocket activateRocket(Vector2       position,
+                                              Vector2       speed,
+                                              RocketType    rocketType,
+                                              RocketColor   rocketColor) {
         Rocket rocket;
         if (!free.isEmpty()) {
             rocket = free.iterator().next();
@@ -42,7 +50,7 @@ public class RocketPool {
                 rocket = WorldUtil.makeRocket(rocketType,rocketColor);
             }
         } else {
-            rocket = WorldUtil.makeRocket(rocketType,rocketColor);
+            rocket = WorldUtil.makeRocket(rocketType, rocketColor);
         }
         rocket.setParams(position, speed);
         action.add(rocket);
@@ -71,5 +79,10 @@ public class RocketPool {
             free.addAll(finished);
             finished.clear();
         }
+    }
+
+    public Rocket delayActivateRocket(Vector2 position, Vector2 speed, RocketType rocketType, RocketColor rocketColor) {
+
+        return null;
     }
 }

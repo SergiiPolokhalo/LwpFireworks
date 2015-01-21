@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
+import ua.pp.kitson.trf.pool.RocketPool;
 import ua.pp.kitson.trf.utils.Constants;
+import ua.pp.kitson.trf.utils.WorldUtil;
 
 /**
  * Created by serhii on 1/20/15.
@@ -32,7 +34,9 @@ public class FirstStageRocket implements Rocket {
 
     private void blowMe() {
         //TODO make blow with SecondStageRockets
-        System.out.println("Blow me");
+        Vector2 pos= new Vector2(body.getPosition());
+        //RocketPool.getInstance().deactivateRocket(this);
+        WorldUtil.blow(pos, 32, 200);
     }
 
     @Override
