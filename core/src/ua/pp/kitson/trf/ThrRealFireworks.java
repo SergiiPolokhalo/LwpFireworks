@@ -39,7 +39,7 @@ public class ThrRealFireworks extends ApplicationAdapter {
                 new Vector2(Constants.CANNON_X, Constants.CANNON_Y),
                 Constants.SHOOT_VELOCITY,
                 RocketType.FIRST,
-                RocketColor.WHITE);
+                RocketColor.random());
     }
 
     @Override
@@ -59,6 +59,6 @@ public class ThrRealFireworks extends ApplicationAdapter {
                 new Vector2(Constants.CANNON_X + MathUtils.random(Constants.WORLD_WIDTH / 2), Constants.CANNON_Y),
                 Constants.SHOOT_VELOCITY,
                 RocketType.FIRST,
-                RocketColor.YELLOW);
+                RocketColor.random());
     }
 }

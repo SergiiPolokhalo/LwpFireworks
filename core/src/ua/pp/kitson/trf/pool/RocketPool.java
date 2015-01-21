@@ -28,7 +28,15 @@ public class RocketPool {
 //    private HashSet<Rocket> finished = new HashSet<>();
 
     private RocketPool() {
+        //pre heat
+        Vector2 pos = new Vector2(-1,-1);
+        Vector2 spd = new Vector2(-2,-2);
 
+        free.add(WorldUtil.makeRocket(RocketType.FIRST,RocketColor.random()).setParams(pos,spd));
+        free.add(WorldUtil.makeRocket(RocketType.FIRST,RocketColor.random()).setParams(pos,spd));
+        for (int i = 100;i>0;i--){
+            free.add(WorldUtil.makeRocket(RocketType.SECOND,RocketColor.random()).setParams(pos,spd));
+        }
     }
 
     public synchronized static RocketPool getInstance() {
@@ -42,20 +50,21 @@ public class RocketPool {
                                               Vector2       speed,
                                               RocketType    rocketType,
                                               RocketColor   rocketColor) {
-        Rocket rocket;
-        if (!free.isEmpty()) {
-            rocket = free.iterator().next();
-            free.remove(rocket);
-            if (!rocket.checkParam(rocketType,rocketColor)){
-                rocket = WorldUtil.makeRocket(rocketType,rocketColor);
+        Rocket rocket = null;
+        for(Rocket r : free) {
+            if (r.checkParam(rocketType,rocketColor)){
+                rocket = r;
+                break;
             }
-        } else {
-            rocket = WorldUtil.makeRocket(rocketType, rocketColor);
         }
-        rocket.setParams(position, speed);
-        action.add(rocket);
+        if (rocket == null) {
+            System.out.println("Cannot found "+rocketType + " " + rocketColor);
+            rocket = WorldUtil.makeRocket(rocketType,rocketColor);
+        } else {
+            free.remove(rocket);
+        }
+        action.add(rocket.setParams(position,speed));
         return rocket;
-
     }
 
     public void deactivateRocket(Rocket rocket) {
@@ -81,8 +90,4 @@ public class RocketPool {
         }
     }
 
-    public Rocket delayActivateRocket(Vector2 position, Vector2 speed, RocketType rocketType, RocketColor rocketColor) {
-
-        return null;
-    }
 }

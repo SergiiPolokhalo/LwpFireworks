@@ -18,6 +18,7 @@ public class FirstStageRocket implements Rocket {
     private ParticleEffect particleEffect;
 
     protected float lastY = -1f;
+    private boolean disableBlow = false;
 
     @Override
     public boolean checkToFinish() {
@@ -33,14 +34,15 @@ public class FirstStageRocket implements Rocket {
     }
 
     private void blowMe() {
-        //TODO make blow with SecondStageRockets
-        Vector2 pos= new Vector2(body.getPosition());
-        //RocketPool.getInstance().deactivateRocket(this);
-        WorldUtil.blow(pos, 32, 200);
+        if (!disableBlow) {
+            Vector2 pos = new Vector2(body.getPosition());
+            //RocketPool.getInstance().deactivateRocket(this);
+            WorldUtil.blow(pos, 32, 100);
+        }
     }
 
     @Override
-    public void drawEffect(SpriteBatch batch) {
+    public Rocket drawEffect(SpriteBatch batch) {
         float x = body.getPosition().x;
         float y = body.getPosition().y;
         for (ParticleEmitter emitter : this.particleEffect.getEmitters()){
@@ -50,21 +52,24 @@ public class FirstStageRocket implements Rocket {
                 emitter.start();
             }
         }
+        return this;
     }
 
     @Override
-    public void setData(Body body, ParticleEffect particleEffect) {
+    public Rocket setData(Body body, ParticleEffect particleEffect) {
         this.particleEffect = particleEffect;
         this.body = body;
+        return this;
     }
 
     @Override
-    public void setParams(Vector2 position, Vector2 speed) {
+    public Rocket setParams(Vector2 position, Vector2 speed) {
         this.body.setTransform(position, 0f);//ignore angle
         this.body.setLinearVelocity(speed.x,speed.y);
         for (ParticleEmitter emitter:this.particleEffect.getEmitters()){
             emitter.setPosition(position.x,position.y);
         }
+        return this;
     }
 
     @Override
@@ -74,5 +79,11 @@ public class FirstStageRocket implements Rocket {
             return  true;
         }
         return false;
+    }
+
+    @Override
+    public Rocket unblow() {
+        this.disableBlow = true;
+        return this;
     }
 }

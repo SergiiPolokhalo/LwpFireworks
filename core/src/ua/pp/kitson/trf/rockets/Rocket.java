@@ -12,11 +12,13 @@ public interface Rocket {
 
     boolean checkToFinish();
 
-    void drawEffect(SpriteBatch batch);
+    Rocket drawEffect(SpriteBatch batch);
 
-    void setData(Body body, ParticleEffect particleEffect);
+    Rocket setData(Body body, ParticleEffect particleEffect);
 
-    void setParams(Vector2 position, Vector2 speed);
+    Rocket setParams(Vector2 position, Vector2 speed);
 
     boolean checkParam(RocketType rocketType, RocketColor rocketColor);
+
+    Rocket unblow();
 }

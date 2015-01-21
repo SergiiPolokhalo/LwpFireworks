@@ -73,7 +73,7 @@ public class WorldUtil {
         particleEffect.load(Gdx.files.internal(asset), Gdx.files.internal("effects"));
         particleEffect.start();
 
-        body.setUserData(new Object[]{rocketType, rocketType});
+        body.setUserData(new Object[]{rocketType, rocketColor});
 
         rocket.setData(body, particleEffect);
         return rocket;
@@ -103,7 +103,7 @@ public class WorldUtil {
                     position,
                     getSpeed(blastPower, angle),
                     RocketType.SECOND,
-                    RocketColor.YELLOW
+                    RocketColor.random()
             );
         }
 
