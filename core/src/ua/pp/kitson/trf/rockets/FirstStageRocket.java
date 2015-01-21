@@ -12,27 +12,35 @@ import ua.pp.kitson.trf.utils.Constants;
  * Created by serhii on 1/20/15.
  */
 public class FirstStageRocket implements Rocket {
-    private Body body;
+    protected Body body;
     private ParticleEffect particleEffect;
-    protected RocketType rocketType;
-    protected RocketColor rocketColor;
+
+    protected float lastY = -1f;
 
     @Override
     public boolean checkToFinish() {
         if (body != null) {
             float y = body.getPosition().y;
-            float x = body.getPosition().x;
-            if (x > Constants.WORLD_WIDTH || x < 0 && y < 0) {
+            if (y<lastY) {
+                blowMe();
                 return true;
             }
+            lastY=y;
         }
         return false;
     }
 
+    private void blowMe() {
+        //TODO make blow with SecondStageRockets
+        System.out.println("Blow me");
+    }
+
     @Override
     public void drawEffect(SpriteBatch batch) {
+        float x = body.getPosition().x;
+        float y = body.getPosition().y;
         for (ParticleEmitter emitter : this.particleEffect.getEmitters()){
-            emitter.setPosition(body.getPosition().x, body.getPosition().y);
+            emitter.setPosition(x, y);
             emitter.draw(batch,Constants.WORLD_STEP);
             if (emitter.isComplete()){
                 emitter.start();

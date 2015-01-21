@@ -35,7 +35,11 @@ public class ThrRealFireworks extends ApplicationAdapter {
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         batch = new SpriteBatch();
-        RocketPool.getInstance().activateRocket(new Vector2(Constants.CANNON_X,Constants.CANNON_Y),Constants.SHOOT_VELOCITY, RocketType.FIRST, RocketColor.WHITE);
+        RocketPool.getInstance().activateRocket(
+                new Vector2(Constants.CANNON_X, Constants.CANNON_Y),
+                Constants.SHOOT_VELOCITY,
+                RocketType.FIRST,
+                RocketColor.WHITE);
     }
 
     @Override
@@ -51,6 +55,10 @@ public class ThrRealFireworks extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        RocketPool.getInstance().activateRocket(new Vector2(Constants.CANNON_X+ MathUtils.random(Constants.WORLD_WIDTH/2),Constants.CANNON_Y),Constants.SHOOT_VELOCITY, RocketType.SECOND,RocketColor.YELLOW);
+        RocketPool.getInstance().activateRocket(
+                new Vector2(Constants.CANNON_X + MathUtils.random(Constants.WORLD_WIDTH / 2), Constants.CANNON_Y),
+                Constants.SHOOT_VELOCITY,
+                RocketType.FIRST,
+                RocketColor.YELLOW);
     }
 }
