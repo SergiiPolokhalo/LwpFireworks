@@ -22,6 +22,7 @@ public class RocketPool {
     CopyOnWriteArraySet<Rocket> action = new CopyOnWriteArraySet<>();
     CopyOnWriteArraySet<Rocket> finished = new CopyOnWriteArraySet<>();
     private static RocketPool INSTANCE = null;
+    
 
     public synchronized static RocketPool getInstance() {
         if (INSTANCE == null) {
