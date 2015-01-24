@@ -33,7 +33,7 @@ public class FirstStageRocket implements Rocket {
         return false;
     }
 
-    private void blowMe() {
+    protected void blowMe() {
         if (!disableBlow) {
             Vector2 pos = new Vector2(body.getPosition());
             //RocketPool.getInstance().deactivateRocket(this);
@@ -85,5 +85,17 @@ public class FirstStageRocket implements Rocket {
     public Rocket unblow() {
         this.disableBlow = true;
         return this;
+    }
+
+    protected void fadeOff() {
+        for (ParticleEmitter emitter : this.particleEffect.getEmitters() ){
+            float[] colors = emitter.getTint().getColors();
+
+            colors[0]= colors[0]/2;
+            colors[1]= colors[1]/2;
+            colors[2]= colors[2]/2;
+            
+            emitter.getTint().setColors(colors);
+        }
     }
 }
