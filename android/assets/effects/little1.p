@@ -5,8 +5,8 @@ active: false
 lowMin: 1000.0
 lowMax: 1000.0
 - Count - 
-min: 100
-max: 800
+min: 0
+max: 100
 - Emission - 
 lowMin: 125.0
 lowMax: 125.0
