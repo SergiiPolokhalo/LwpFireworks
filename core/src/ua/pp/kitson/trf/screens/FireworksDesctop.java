@@ -88,9 +88,11 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         Screen zero in top left
          */
         float h = Gdx.graphics.getHeight();
-        float delta = (Constants.WORLD_HEIGHT / h);
-        float y = Constants.WORLD_HEIGHT - delta * screenY;
-        float x = screenX;
+        float w = Gdx.graphics.getWidth();
+        float deltaH = (Constants.WORLD_HEIGHT / h);
+        float y = Constants.WORLD_HEIGHT - deltaH * screenY;
+        float deltaW = (Constants.WORLD_WIDTH / w);
+        float x = /*Constants.WORLD_WIDTH - */deltaW * screenX;
 
         RocketPool.getInstance().activateRocket(
                 new Vector2(x, y),

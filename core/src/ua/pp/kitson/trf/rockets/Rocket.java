@@ -21,4 +21,8 @@ public interface Rocket {
     boolean checkParam(RocketType rocketType, RocketColor rocketColor);
 
     Rocket unblow();
+
+    void dispose();
+
+    void setColor(RocketColor rocketColor);
 }

@@ -92,18 +92,18 @@ public class WorldUtil {
             default:
                 throw new RuntimeException("Wrong rocket type");
         }
+        rocket.setColor(rocketColor);
         return makeObject(rocket, rocketType, rocketColor);
     }
 
-    public static void blow(Vector2 position, int numRays, float blastPower) {
+    public static void blow(Vector2 position, int numRays, float blastPower, RocketColor rocketColor) {
         for (int i=numRays;i>0;i--){
             float angle = (i / (float) numRays) * 360;
-            Vector2 rayPower = new Vector2(MathUtils.sinDeg(angle) * blastPower, MathUtils.cosDeg(angle) * blastPower);
             Rocket rocket = RocketPool.getInstance().activateRocket(
                     position,
                     getSpeed(blastPower, angle),
                     RocketType.SECOND,
-                    RocketColor.random()
+                    rocketColor
             );
         }
 

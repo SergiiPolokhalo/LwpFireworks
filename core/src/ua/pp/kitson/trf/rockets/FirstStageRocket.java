@@ -14,6 +14,7 @@ import ua.pp.kitson.trf.utils.WorldUtil;
  * Created by serhii on 1/20/15.
  */
 public class FirstStageRocket implements Rocket {
+    protected RocketColor color;
     protected Body body;
     private ParticleEffect particleEffect;
 
@@ -37,7 +38,7 @@ public class FirstStageRocket implements Rocket {
         if (!disableBlow) {
             Vector2 pos = new Vector2(body.getPosition());
             //RocketPool.getInstance().deactivateRocket(this);
-            WorldUtil.blow(pos, 32, 100);
+            WorldUtil.blow(pos, 32, 100, this.color);
         }
     }
 
@@ -85,6 +86,18 @@ public class FirstStageRocket implements Rocket {
     public Rocket unblow() {
         this.disableBlow = true;
         return this;
+    }
+
+    @Override
+    public void dispose() {
+        disableBlow = true;
+        WorldUtil.makeWorld().destroyBody(this.body);
+        this.particleEffect.dispose();
+    }
+
+    @Override
+    public void setColor(RocketColor rocketColor) {
+        this.color = rocketColor;
     }
 
     protected void fadeOff() {
