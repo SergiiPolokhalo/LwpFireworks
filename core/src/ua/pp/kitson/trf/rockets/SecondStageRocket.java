@@ -10,7 +10,6 @@ import ua.pp.kitson.trf.utils.Constants;
 public class SecondStageRocket extends FirstStageRocket {
     float initialX, initialY;
     int step = 0;
-    int fadeFrom = 80;
     int maxStep = 100;
 
     @Override
@@ -26,12 +25,6 @@ public class SecondStageRocket extends FirstStageRocket {
         if (body != null) {
             float y = body.getPosition().y;
             float x = body.getPosition().x;
-//            if (x > Constants.WORLD_WIDTH || x < 0 || y < 0 || y > Constants.WORLD_HEIGHT) {
-//                return true;
-//            }
-            if (step > fadeFrom) {
-                fadeOff();
-            }
             if (step++>maxStep){
                 return true;
             }

@@ -57,25 +57,9 @@ public class WorldUtil {
         fixtureDef.filter.groupIndex = -1;
         body.createFixture(fixtureDef);
         circleShape.dispose();
-
-        ParticleEffect particleEffect = new ParticleEffect();
-        String asset;
-        switch (rocketColor) {
-            case WHITE:
-                asset = "effects/little.p";break;
-            case YELLOW:
-                asset = "effects/little1.p";break;
-            case BLUE:
-                asset = "effects/little2.p";break;
-            default:
-                throw new RuntimeException("Wrong color type");
-        }
-        particleEffect.load(Gdx.files.internal(asset), Gdx.files.internal("effects"));
-        particleEffect.start();
-
         body.setUserData(new Object[]{rocketType, rocketColor});
 
-        rocket.setData(body, particleEffect);
+        rocket.setData(body);
         return rocket;
     }
 

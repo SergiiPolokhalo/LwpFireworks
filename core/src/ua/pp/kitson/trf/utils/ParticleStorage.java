@@ -22,14 +22,22 @@ public class ParticleStorage {
 
     private ParticleStorage() {
         storage = new HashMap<>();
+        HashMap<RocketColor, String> names = new HashMap<>();
+        names.put(RocketColor.WHITE,"effects/little.p");
+        names.put(RocketColor.YELLOW,"effects/little1.p");
+        names.put(RocketColor.BLUE,"effects/little2.p");
         //fill storage
         for (RocketColor rc: RocketColor.values()) {
             ParticleEffect particleEffect = new ParticleEffect();
-            particleEffect.load(Gdx.files.internal("effects/little.p"), Gdx.files.internal("effects"));
-            ParticleEffectPool pool = new ParticleEffectPool(particleEffect, 36 + 3, 3 * 36 + 3);
+            particleEffect.load(Gdx.files.internal(names.get(rc)), Gdx.files.internal("effects"));
+            ParticleEffectPool pool = new ParticleEffectPool(particleEffect, 3, 3 * 36 + 3);
             storage.put(rc,pool);
         }
     }
+
+    /*
+     * Afer use must be called .free()
+     */
     public ParticleEffectPool.PooledEffect getEffect(RocketColor rocketColor, Vector2 position) {
         ParticleEffectPool.PooledEffect eff = storage.get(rocketColor).obtain();
         eff.setPosition(position.x,position.y);

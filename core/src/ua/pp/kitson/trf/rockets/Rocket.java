@@ -14,7 +14,7 @@ public interface Rocket {
 
     Rocket drawEffect(SpriteBatch batch);
 
-    Rocket setData(Body body, ParticleEffect particleEffect);
+    Rocket setData(Body body);
 
     Rocket setParams(Vector2 position, Vector2 speed);
 
