@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import ua.pp.kitson.trf.pool.RocketPool;
+import ua.pp.kitson.trf.rockets.Rocket;
 import ua.pp.kitson.trf.rockets.RocketColor;
 import ua.pp.kitson.trf.rockets.RocketType;
 import ua.pp.kitson.trf.utils.Constants;
@@ -31,12 +32,12 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         camera.position.set(Constants.WORLD_WIDTH / 2, Constants.WORLD_HEIGHT / 2, 0);
         batch = new SpriteBatch();
-        RocketPool.getInstance().activateRocket(
-                new Vector2(Constants.CANNON_X, Constants.CANNON_Y),
-                Constants.SHOOT_VELOCITY,
-                RocketType.FIRST,
+        Rocket rocket = null;
+        rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
-
+        rocket.setParams(new Vector2(Constants.CANNON_X, Constants.CANNON_Y),
+                Constants.SHOOT_VELOCITY);
+        RocketPool.getInstance().addToDrawList(rocket);
     }
 
     @Override
@@ -93,12 +94,12 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         float y = Constants.WORLD_HEIGHT - deltaH * screenY;
         float deltaW = (Constants.WORLD_WIDTH / w);
         float x = /*Constants.WORLD_WIDTH - */deltaW * screenX;
-
-        RocketPool.getInstance().activateRocket(
-                new Vector2(x, y),
-                Constants.SHOOT_VELOCITY,
-                RocketType.FIRST,
+        Rocket rocket = null;
+        rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
+        rocket.setParams(new Vector2(x, y),
+                Constants.SHOOT_VELOCITY);
+        RocketPool.getInstance().addToDrawList(rocket);
         return false;
     }
 

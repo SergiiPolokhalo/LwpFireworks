@@ -81,14 +81,16 @@ public class WorldUtil {
     }
 
     public static void blow(Vector2 position, int numRays, float blastPower, RocketColor rocketColor) {
+        float angle = (1f / (float) numRays) * 360;
+        float currAngle = angle;
         for (int i=numRays;i>0;i--){
-            float angle = (i / (float) numRays) * 360;
-            Rocket rocket = RocketPool.getInstance().activateRocket(
-                    position,
-                    getSpeed(blastPower, angle),
-                    RocketType.SECOND,
-                    rocketColor
-            );
+            Rocket rocket = null;
+            rocket = WorldUtil.makeRocket(RocketType.SECOND,
+                    rocketColor);
+            rocket.setParams(position,
+                    getSpeed(blastPower, currAngle));
+            currAngle+=angle;
+            RocketPool.getInstance().addToDrawList(rocket);
         }
 
     }
