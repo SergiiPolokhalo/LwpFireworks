@@ -2,6 +2,7 @@ package ua.pp.kitson.trf.rockets;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -17,7 +18,8 @@ public class FirstStageRocket implements Rocket {
     //collection of previous coodinates
     public class FadingPathElement {
         int age = 0;
-        float x,y;
+        final float x;
+        final float y;
 
         public float getX() {
             return x;
@@ -59,14 +61,13 @@ public class FirstStageRocket implements Rocket {
         }
 
     }
-    FadingPathController controller = new FadingPathController();
-    protected RocketColor color;
-    protected Body body;
 
+    private final FadingPathController controller = new FadingPathController();
+    private RocketColor color;
+    Body body;
     protected float lastY = -1f;
     private boolean disableBlow = false;
     private Sprite texture;
-    //private ParticleEffectPool.PooledEffect effect;
 
     @Override
     public boolean checkToFinish() {
@@ -81,10 +82,10 @@ public class FirstStageRocket implements Rocket {
         return false;
     }
 
-    protected void blowMe() {
+    void blowMe() {
         if (!disableBlow) {
             Vector2 pos = new Vector2(body.getPosition());
-            WorldUtil.blow(pos, 32, 100, this.color);
+            WorldUtil.blow(pos, MathUtils.random(8, 32), MathUtils.random(25, 65), this.color);
         }
     }
 
@@ -118,10 +119,7 @@ public class FirstStageRocket implements Rocket {
     @Override
     public boolean checkParam(RocketType rocketType, RocketColor rocketColor) {
         Object[] arr = (Object[]) this.body.getUserData();
-        if (arr[0]==rocketType && arr[1]==rocketColor) {
-            return  true;
-        }
-        return false;
+        return arr[0] == rocketType && arr[1] == rocketColor;
     }
 
     @Override

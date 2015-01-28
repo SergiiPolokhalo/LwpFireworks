@@ -21,9 +21,9 @@ import ua.pp.kitson.trf.utils.WorldUtil;
  */
 public class FireworksDesctop extends FireworkBaseScreen implements InputProcessor {
 
-    World world;
-    OrthographicCamera camera;
-    SpriteBatch batch;
+    final World world;
+    final OrthographicCamera camera;
+    final SpriteBatch batch;
 
     public FireworksDesctop(Game game) {
         super(game);

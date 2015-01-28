@@ -18,8 +18,8 @@ import ua.pp.kitson.trf.rockets.RocketColor;
  * Created by serhii on 1/20/15.
  */
 public class RocketPool {
-    CopyOnWriteArraySet<Rocket> action = new CopyOnWriteArraySet<>();
-    private HashMap<RocketColor, Sprite> textures = new HashMap<>();
+    private final CopyOnWriteArraySet<Rocket> action = new CopyOnWriteArraySet<>();
+    private final HashMap<RocketColor, Sprite> textures = new HashMap<>();
     private static RocketPool INSTANCE = null;
 
     private RocketPool() {

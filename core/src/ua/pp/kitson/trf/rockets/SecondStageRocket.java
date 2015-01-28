@@ -2,15 +2,14 @@ package ua.pp.kitson.trf.rockets;
 
 import com.badlogic.gdx.math.Vector2;
 
-import ua.pp.kitson.trf.utils.Constants;
-
 /**
  * Created by serhii on 1/20/15.
  */
 public class SecondStageRocket extends FirstStageRocket {
-    float initialX, initialY;
-    int step = 0;
-    int maxStep = 100;
+    private float initialX;
+    private float initialY;
+    private int step = 0;
+    private final int maxStep = 200;
 
     @Override
     public Rocket setParams(Vector2 position, float speedX, float speedY) {
