@@ -1,18 +1,11 @@
 package ua.pp.kitson.trf.rockets;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.Stack;
-import java.util.function.Consumer;
 
 import ua.pp.kitson.trf.pool.RocketPool;
 import ua.pp.kitson.trf.utils.WorldUtil;
@@ -47,11 +40,8 @@ public class FirstStageRocket implements Rocket {
         Stack<FadingPathElement> path = new Stack<>();
         Stack<FadingPathElement> tmp = new Stack<>();
 
-        public void draw(final SpriteBatch batch, final Texture texture, float x, float y){
-            path.forEach(new Consumer<FadingPathElement>() {
-                @Override
-                public void accept(FadingPathElement fadingPathElement) {
-                    Sprite sprite = new Sprite(texture);
+        public void draw(final SpriteBatch batch, final Sprite sprite, float x, float y) {
+            for (FadingPathElement fadingPathElement : path) {
                     sprite.setX(fadingPathElement.getX());
                     sprite.setY(fadingPathElement.getY());
                     sprite.draw(batch,0.7f*((MAX_LIFE_LENGTH - fadingPathElement.age)/((float)MAX_LIFE_LENGTH)));
@@ -60,11 +50,10 @@ public class FirstStageRocket implements Rocket {
                         tmp.push(fadingPathElement);
                     }
                 }
-            });
             path.clear();
             path.addAll(tmp);
             tmp.clear();
-            batch.draw(texture,x,y);
+            batch.draw(sprite, x, y);
             path.push(new FadingPathElement(x,y));
 
         }
@@ -76,7 +65,7 @@ public class FirstStageRocket implements Rocket {
 
     protected float lastY = -1f;
     private boolean disableBlow = false;
-    private Texture texture;
+    private Sprite texture;
     //private ParticleEffectPool.PooledEffect effect;
 
     @Override
@@ -110,7 +99,7 @@ public class FirstStageRocket implements Rocket {
     @Override
     public Rocket setData(Body body) {
         this.body = body;
-        this.texture = new Texture(Gdx.files.internal("effects/particle.png"));
+        this.texture = RocketPool.getInstance().getSprite(this.color);
         return this;
     }
 
@@ -120,10 +109,9 @@ public class FirstStageRocket implements Rocket {
     }
 
     @Override
-    public Rocket setParams(Vector2 position, Vector2 speed) {
+    public Rocket setParams(Vector2 position, float speedX, float speedY) {
         this.body.setTransform(position, 0f);//ignore angle
-        this.body.setLinearVelocity(speed.x,speed.y);
-//        this.effect.setPosition(position.x,position.y);
+        this.body.setLinearVelocity(speedX, speedY);
         return this;
     }
 
@@ -145,7 +133,7 @@ public class FirstStageRocket implements Rocket {
     @Override
     public void dispose() {
         disableBlow = true;
-        texture.dispose();
+        WorldUtil.makeWorld().destroyBody(this.body);
     }
 
     @Override

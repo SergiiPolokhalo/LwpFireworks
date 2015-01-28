@@ -1,6 +1,5 @@
 package ua.pp.kitson.trf.rockets;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -17,7 +16,7 @@ public interface Rocket {
     Rocket setData(Body body);
     Body getData();
 
-    Rocket setParams(Vector2 position, Vector2 speed);
+    Rocket setParams(Vector2 position, float speedX, float speedY);
 
     boolean checkParam(RocketType rocketType, RocketColor rocketColor);
 

@@ -1,18 +1,12 @@
 package ua.pp.kitson.trf.utils;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-
-import java.util.ArrayList;
 
 import ua.pp.kitson.trf.pool.RocketPool;
 import ua.pp.kitson.trf.rockets.FirstStageRocket;
@@ -84,19 +78,14 @@ public class WorldUtil {
         float angle = (1f / (float) numRays) * 360;
         float currAngle = angle;
         for (int i=numRays;i>0;i--){
-            Rocket rocket = null;
+            Rocket rocket;
             rocket = WorldUtil.makeRocket(RocketType.SECOND,
                     rocketColor);
-            rocket.setParams(position,
-                    getSpeed(blastPower, currAngle));
+            rocket.setParams(position, blastPower * MathUtils.cosDeg(currAngle), blastPower * MathUtils.sinDeg(currAngle));
             currAngle+=angle;
             RocketPool.getInstance().addToDrawList(rocket);
         }
 
     }
 
-    private static Vector2 getSpeed(float blastPower, float angle) {
-        Vector2 speed = new Vector2();
-        return speed.set(blastPower*MathUtils.cosDeg(angle),blastPower*MathUtils.sinDeg(angle));
-    }
 }

@@ -13,22 +13,19 @@ public class SecondStageRocket extends FirstStageRocket {
     int maxStep = 100;
 
     @Override
-    public Rocket setParams(Vector2 position, Vector2 speed) {
+    public Rocket setParams(Vector2 position, float speedX, float speedY) {
         initialX = position.x;
         initialY = position.y;
         step = 0;
-        return super.setParams(position, speed);
+        return super.setParams(position, speedX, speedY);
     }
 
     @Override
     public boolean checkToFinish() {
         if (body != null) {
-            float y = body.getPosition().y;
-            float x = body.getPosition().x;
             if (step++>maxStep){
                 return true;
             }
-
         }
         return false;
     }

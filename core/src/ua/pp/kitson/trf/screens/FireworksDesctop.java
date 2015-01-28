@@ -32,11 +32,10 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         camera.position.set(Constants.WORLD_WIDTH / 2, Constants.WORLD_HEIGHT / 2, 0);
         batch = new SpriteBatch();
-        Rocket rocket = null;
+        Rocket rocket;
         rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
-        rocket.setParams(new Vector2(Constants.CANNON_X, Constants.CANNON_Y),
-                Constants.SHOOT_VELOCITY);
+        rocket.setParams(new Vector2(Constants.CANNON_X, Constants.CANNON_Y), Constants.SHOOT_VELOCITY.x, Constants.SHOOT_VELOCITY.y);
         RocketPool.getInstance().addToDrawList(rocket);
     }
 
@@ -94,11 +93,10 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         float y = Constants.WORLD_HEIGHT - deltaH * screenY;
         float deltaW = (Constants.WORLD_WIDTH / w);
         float x = /*Constants.WORLD_WIDTH - */deltaW * screenX;
-        Rocket rocket = null;
+        Rocket rocket;
         rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
-        rocket.setParams(new Vector2(x, y),
-                Constants.SHOOT_VELOCITY);
+        rocket.setParams(new Vector2(x, y), Constants.SHOOT_VELOCITY.x, Constants.SHOOT_VELOCITY.y);
         RocketPool.getInstance().addToDrawList(rocket);
         return false;
     }
