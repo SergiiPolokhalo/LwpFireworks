@@ -10,7 +10,11 @@ public interface Constants {
     int WORLD_HEIGHT = 800;
     Vector2 GRAVITY = new Vector2(0, -10);
     float CANNON_X = 10f;
+    float CANNON_X_MAX = WORLD_WIDTH - 2 * CANNON_X;
     float CANNON_Y = 10f;
     float WORLD_STEP = 1/60f;
     Vector2 SHOOT_VELOCITY = new Vector2(20, 100);
+    long TIME_SLEEP = 2000;
+    int MAX_ROCKETS = 16;
+
 }

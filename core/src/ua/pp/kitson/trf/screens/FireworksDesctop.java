@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -15,6 +16,14 @@ import ua.pp.kitson.trf.rockets.RocketColor;
 import ua.pp.kitson.trf.rockets.RocketType;
 import ua.pp.kitson.trf.utils.Constants;
 import ua.pp.kitson.trf.utils.WorldUtil;
+
+import static ua.pp.kitson.trf.utils.Constants.WORLD_WIDTH;
+import static ua.pp.kitson.trf.utils.Constants.WORLD_HEIGHT;
+import static ua.pp.kitson.trf.utils.Constants.CANNON_X;
+import static ua.pp.kitson.trf.utils.Constants.CANNON_Y;
+import static ua.pp.kitson.trf.utils.Constants.CANNON_X_MAX;
+import static ua.pp.kitson.trf.utils.Constants.SHOOT_VELOCITY;
+
 
 /**
  * Created by serhii on 1/23/15.
@@ -29,14 +38,36 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         super(game);
         Gdx.input.setInputProcessor(this);
         world = WorldUtil.makeWorld();
-        camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-        camera.position.set(Constants.WORLD_WIDTH / 2, Constants.WORLD_HEIGHT / 2, 0);
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
         batch = new SpriteBatch();
         Rocket rocket;
         rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
-        rocket.setParams(new Vector2(Constants.CANNON_X, Constants.CANNON_Y), Constants.SHOOT_VELOCITY.x, Constants.SHOOT_VELOCITY.y);
+        rocket.setParams(new Vector2(Constants.CANNON_X, CANNON_Y), SHOOT_VELOCITY.x, SHOOT_VELOCITY.y);
         RocketPool.getInstance().addToDrawList(rocket);
+        Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(Constants.TIME_SLEEP);
+                        if (!world.isLocked()) {
+                            Rocket rocket;
+                            rocket = WorldUtil.makeRocket(RocketType.FIRST,
+                                    RocketColor.random());
+                            float xPos = MathUtils.random(Constants.CANNON_X, CANNON_X_MAX);
+                            float sSpeed = SHOOT_VELOCITY.y * (((WORLD_WIDTH - 2 * CANNON_X) / 2 - xPos) / WORLD_WIDTH);
+                            rocket.setParams(new Vector2(xPos, CANNON_Y), sSpeed, MathUtils.random((int) (SHOOT_VELOCITY.y * 0.75), (int) (SHOOT_VELOCITY.y * 1.25)));
+                            RocketPool.getInstance().addToDrawList(rocket);
+                        }
+                    } catch (InterruptedException e) {
+
+                    }
+                }
+            }
+        };
+        new Thread(runner).start();
     }
 
     @Override
@@ -50,7 +81,9 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         batch.begin();
         RocketPool.getInstance().draw(batch);
         batch.end();
-        world.step(Constants.WORLD_STEP, 6, 2);
+        synchronized (this) {
+            world.step(Constants.WORLD_STEP, 1, 1);
+        }
 
     }
 
@@ -90,13 +123,13 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         float h = Gdx.graphics.getHeight();
         float w = Gdx.graphics.getWidth();
         float deltaH = (Constants.WORLD_HEIGHT / h);
-        float y = Constants.WORLD_HEIGHT - deltaH * screenY;
-        float deltaW = (Constants.WORLD_WIDTH / w);
+        float y = WORLD_HEIGHT - deltaH * screenY;
+        float deltaW = (WORLD_WIDTH / w);
         float x = /*Constants.WORLD_WIDTH - */deltaW * screenX;
         Rocket rocket;
         rocket = WorldUtil.makeRocket(RocketType.FIRST,
                 RocketColor.random());
-        rocket.setParams(new Vector2(x, y), Constants.SHOOT_VELOCITY.x, Constants.SHOOT_VELOCITY.y);
+        rocket.setParams(new Vector2(x, y), SHOOT_VELOCITY.x, SHOOT_VELOCITY.y);
         RocketPool.getInstance().addToDrawList(rocket);
         return false;
     }
@@ -117,45 +150,4 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
     }
 
 
-   /*
-
-
-
-
-    @Override
-    public void render() {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, true);
-        RocketPool.getInstance().activateRocket(
-                new Vector2(Constants.CANNON_X + MathUtils.random(Constants.WORLD_WIDTH / 2), Constants.CANNON_Y),
-                Constants.SHOOT_VELOCITY,
-                RocketType.FIRST,
-                RocketColor.random());
-    }
-    */
-/*
-    @Override
-    public void render(float deltaTime) {
-
-        if(worldController.isCollisionWithEnemy()) {
-
-            game.setScreen(game.battleScreen);
-
-        } else {
-
-            if(!paused) {
-                worldController.update(deltaTime);
-            }
-
-            Gdx.gl.glClearColor(57.0f / 255.0f, 181.0f / 225.0f, 115.0f / 255.0f, 1.0f);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            worldRenderer.render();
-        }
-
-    }
-*/
 }
