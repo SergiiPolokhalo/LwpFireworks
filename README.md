@@ -1,2 +1,2 @@
-Live Wallpaper Fireworks
-
+# LwpFireworks
+Fireworks with real moving behaviour
