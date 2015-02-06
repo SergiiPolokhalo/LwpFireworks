@@ -85,7 +85,10 @@ public class FirstStageRocket implements Rocket {
     void blowMe() {
         if (!disableBlow) {
             Vector2 pos = new Vector2(body.getPosition());
-            WorldUtil.blow(pos, MathUtils.random(8, 32), MathUtils.random(25, 65), this.color);
+            WorldUtil.blow(pos, MathUtils.random(8, 32), MathUtils.random(25, 65), this.color, RocketType.SECOND);
+            if (MathUtils.random(0, 10) > 7) {
+                WorldUtil.blow(pos, MathUtils.random(8 / 2, 32 / 2), MathUtils.random(25 / 2, 65 / 2), this.color, RocketType.THIRD);
+            }
         }
     }
 

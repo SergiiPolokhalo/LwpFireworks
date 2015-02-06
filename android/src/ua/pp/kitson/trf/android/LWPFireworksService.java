@@ -21,7 +21,7 @@ public class LWPFireworksService extends AndroidLiveWallpaperService {
         config.useAccelerometer = false;
         config.getTouchEventsForLiveWallpaper = true;
 
-        ApplicationListener listener = new ThrRealFireworks();
+        ApplicationListener listener = new ThrRealFireworks(new TimeUtilsAndroid());
         initialize(listener, config);
     }
  }

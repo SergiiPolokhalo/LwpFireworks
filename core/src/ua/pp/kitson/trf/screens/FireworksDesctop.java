@@ -84,6 +84,7 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
         synchronized (this) {
             world.step(Constants.WORLD_STEP, 1, 1);
         }
+        //TODO add new rocket here
 
     }
 

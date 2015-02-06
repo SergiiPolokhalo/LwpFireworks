@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = Constants.WORLD_WIDTH;
         config.height = Constants.WORLD_HEIGHT;
-		new LwjglApplication(new ThrRealFireworks(), config);
-	}
+        new LwjglApplication(new ThrRealFireworks(new TimeUtilsDesctop()), config);
+    }
 }
