@@ -1,6 +1,7 @@
 package ua.pp.kitson.trf;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
 import ua.pp.kitson.trf.screens.FireworksDesctop;
 import ua.pp.kitson.trf.utils.TimeUtils;
@@ -15,6 +16,8 @@ public class ThrRealFireworks extends Game {
 
     @Override
     public void create() {
-        setScreen(new FireworksDesctop(this));
+        FireworksDesctop desktop = new FireworksDesctop(this);
+        desktop.setTimeUtils(this.timeUtils);
+        setScreen(desktop);
     }
 }

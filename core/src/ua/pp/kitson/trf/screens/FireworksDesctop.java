@@ -15,6 +15,7 @@ import ua.pp.kitson.trf.rockets.Rocket;
 import ua.pp.kitson.trf.rockets.RocketColor;
 import ua.pp.kitson.trf.rockets.RocketType;
 import ua.pp.kitson.trf.utils.Constants;
+import ua.pp.kitson.trf.utils.TimeUtils;
 import ua.pp.kitson.trf.utils.WorldUtil;
 
 import static ua.pp.kitson.trf.utils.Constants.WORLD_WIDTH;
@@ -33,6 +34,7 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
     final World world;
     final OrthographicCamera camera;
     final SpriteBatch batch;
+    private TimeUtils timeUtils;
 
     public FireworksDesctop(Game game) {
         super(game);
@@ -85,6 +87,7 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
             world.step(Constants.WORLD_STEP, 1, 1);
         }
         //TODO add new rocket here
+        RocketPool.getInstance().moveReadyToDraw();
 
     }
 
@@ -118,20 +121,6 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        /*
-        Screen zero in top left
-         */
-//        float h = Gdx.graphics.getHeight();
-//        float w = Gdx.graphics.getWidth();
-//        float deltaH = (Constants.WORLD_HEIGHT / h);
-//        float y = WORLD_HEIGHT - deltaH * screenY;
-//        float deltaW = (WORLD_WIDTH / w);
-//        float x = /*Constants.WORLD_WIDTH - */deltaW * screenX;
-//        Rocket rocket;
-//        rocket = WorldUtil.makeRocket(RocketType.FIRST,
-//                RocketColor.random());
-//        rocket.setParams(new Vector2(x, y), SHOOT_VELOCITY.x, SHOOT_VELOCITY.y);
-//        RocketPool.getInstance().addToDrawList(rocket);
         return false;
     }
 
@@ -151,4 +140,11 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
     }
 
 
+    public void setTimeUtils(TimeUtils timeUtils) {
+        this.timeUtils = timeUtils;
+    }
+
+    public TimeUtils getTimeUtils() {
+        return timeUtils;
+    }
 }

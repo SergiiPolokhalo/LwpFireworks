@@ -3,6 +3,7 @@ package ua.pp.kitson.trf.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import ua.pp.kitson.trf.ThrRealFireworks;
+import ua.pp.kitson.trf.desktop.utils.TimeUtilsDesctop;
 import ua.pp.kitson.trf.utils.Constants;
 
 public class DesktopLauncher {

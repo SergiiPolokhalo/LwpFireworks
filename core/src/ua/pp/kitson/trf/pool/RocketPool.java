@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import ua.pp.kitson.trf.rockets.Rocket;
 import ua.pp.kitson.trf.rockets.RocketColor;
+import ua.pp.kitson.trf.rockets.RocketType;
+import ua.pp.kitson.trf.utils.WorldUtil;
 
 //import java.util.concurrent.
 
@@ -18,6 +23,24 @@ import ua.pp.kitson.trf.rockets.RocketColor;
  * Created by serhii on 1/20/15.
  */
 public class RocketPool {
+    public static class ReadyData {
+        RocketType rocketType;
+        RocketColor rocketColor;
+        Vector2 position;
+        float xSpeed;
+        float ySpeed;
+
+        public ReadyData(RocketType rocketType, RocketColor rocketColor, Vector2 position, float xSpeed, float ySpeed) {
+            this.rocketType = rocketType;
+            this.rocketColor = rocketColor;
+            this.position = position;
+            this.xSpeed = xSpeed;
+            this.ySpeed = ySpeed;
+        }
+    }
+
+    //make concurrent list/stack
+    ConcurrentLinkedQueue<ReadyData> readyDatas = new ConcurrentLinkedQueue<>();
     private final CopyOnWriteArraySet<Rocket> action = new CopyOnWriteArraySet<>();
     private final HashMap<RocketColor, Sprite> textures = new HashMap<>();
     private static RocketPool INSTANCE = null;
@@ -42,6 +65,21 @@ public class RocketPool {
 
     public void addToDrawList(Rocket rocket) {
         action.add(rocket);
+    }
+
+    public void addToReadyList(RocketType rocketType, RocketColor rocketColor, Vector2 position, float xSpeed, float ySpeed) {
+        readyDatas.add(new ReadyData(rocketType, rocketColor, position, xSpeed, ySpeed));
+    }
+
+    public void moveReadyToDraw() {
+
+        while (!readyDatas.isEmpty()) {
+            ReadyData data = readyDatas.poll();
+            Rocket rocket;
+            rocket = WorldUtil.makeRocket(data.rocketType, data.rocketColor);
+            rocket.setParams(data.position, data.xSpeed, data.ySpeed);
+            addToDrawList(rocket);
+        }
     }
 
     public void draw(SpriteBatch batch) {

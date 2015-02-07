@@ -113,10 +113,8 @@ public class WorldUtil {
 
         @Override
         public void run() {
-            Rocket rocket;
-            rocket = WorldUtil.makeRocket(rocketType, rocketColor);
-            rocket.setParams(position, xSpeed, ySpeed);
-            RocketPool.getInstance().addToDrawList(rocket);
+            //must add elements fo Queue
+            RocketPool.getInstance().addToReadyList(rocketType, rocketColor, position, xSpeed, ySpeed);
         }
     }
 
@@ -134,12 +132,13 @@ public class WorldUtil {
                 break;
             default:
                 for (int i = numRays; i > 0; i--) {
-                    Rocket rocket;
-                    rocket = WorldUtil.makeRocket(RocketType.SECOND,
-                            rocketColor);
-                    rocket.setParams(position, blastPower * MathUtils.cosDeg(currAngle), blastPower * MathUtils.sinDeg(currAngle));
+                    RocketPool.getInstance().addToReadyList(rocketType, rocketColor, position, blastPower * MathUtils.cosDeg(currAngle), blastPower * MathUtils.sinDeg(currAngle));
+//                    Rocket rocket;
+//                    rocket = WorldUtil.makeRocket(RocketType.SECOND,
+//                            rocketColor);
+//                    rocket.setParams(position, blastPower * MathUtils.cosDeg(currAngle), blastPower * MathUtils.sinDeg(currAngle));
                     currAngle += angle;
-                    RocketPool.getInstance().addToDrawList(rocket);
+//                    RocketPool.getInstance().addToDrawList(rocket);
                 }
         }
     }
