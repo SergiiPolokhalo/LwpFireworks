@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TheRealFireworks</string>
+    <string name="app_name">The Real Fireworks</string>
+    <string name="message_pre_toast">Please, start Live Wallpaper Selector.</string>
+    <string name="message_toast">Choose \'The Real Fireworks\' from the list to start the Live Wallpaper.</string>
+    <string name="title_activity_the_real_fireworks">The Real Fireworks Setting</string>
+    <string name="hello_world">Thanks for Your choice!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
