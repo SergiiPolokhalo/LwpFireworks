@@ -7,14 +7,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+//import Leadbolt classes
+import com.appfireworks.android.listener.AppModuleListener;
+import com.appfireworks.android.track.AppTracker;
+import com.ddghmuedoolmvssforl.AdController;
 
 public class TheRealFireworksActivity extends Activity {
+
+    private AdController interstitial;
+    private AdController audioad;
+    private Activity act = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_the_real_fireworks);
+        if(savedInstanceState == null) {
+            initializeLeadBolt();
+        }
         Toast toast = Toast.makeText(this, "Choose 'The Real Fireworks' from the list to start the Live Wallpaper.", Toast.LENGTH_LONG);
         toast.show();
 
@@ -23,6 +33,53 @@ public class TheRealFireworksActivity extends Activity {
         startActivity(intent);
     }
 
+    private void initializeLeadBolt() {
+        audioad = new AdController(act, "707642171");
+        audioad.loadAudioAd();
+        AppTracker.startSession(act, "QsRtIFlA5PX2MdP8pMTuIqqTT3XFDiFc", new AppModuleListener() {
+            @Override
+            public void onModuleLoaded() {}
+            @Override
+            public void onModuleFailed() {
+                loadDisplayAd();
+            }
+            @Override
+            public void onModuleClosed() {}
+            @Override
+            public void onModuleCached() {}
+        });
+    }
+
+    private void loadDisplayAd() {
+        // use this else where in your app to load a Leadbolt Interstitial Ad
+        interstitial = new AdController(act, "180520850");
+        interstitial.loadAd();
+    }
+
+    public void onPause() {
+        super.onPause();
+        if (!isFinishing()) {
+            AppTracker.pause(getApplicationContext());
+        }
+    }
+
+    public void onResume() {
+        super.onResume();
+        AppTracker.resume(getApplicationContext());
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        if(isFinishing()) {
+            AppTracker.closeSession(getApplicationContext(), true);
+        }
+        if(audioad != null) {
+            audioad.destroyAd();
+        }
+        if(interstitial != null) {
+            interstitial.destroyAd();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

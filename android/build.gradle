@@ -119,4 +119,7 @@ idea {
     }
 }
 dependencies {
+    compile files('libs/ddghmuedoolmvssforl.jar')
+    compile files('libs/AppFireworks.jar')
+    compile files('libs/LeadBoltAdMob.jar')
 }
