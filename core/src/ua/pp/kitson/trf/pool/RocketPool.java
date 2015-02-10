@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
@@ -23,6 +22,21 @@ import ua.pp.kitson.trf.utils.WorldUtil;
  * Created by serhii on 1/20/15.
  */
 public class RocketPool {
+    private static final long MS_STEP = 600;
+    private static int MAX_COUNT = 256;
+    private long lastDrawTime = System.currentTimeMillis();
+
+    public void setLastDrawTime(long lastDrawTime) {
+        this.lastDrawTime = lastDrawTime;
+    }
+
+    public long getLastDrawTime() {
+        return lastDrawTime;
+    }
+
+    public boolean isShown() {
+        return (getLastDrawTime() + MS_STEP) > System.currentTimeMillis();
+    }
     public static class ReadyData {
         RocketType rocketType;
         RocketColor rocketColor;
@@ -52,6 +66,14 @@ public class RocketPool {
         textures.put(RocketColor.GREEN, new Sprite(new Texture(Gdx.files.internal("effects/GR.png"))));
     }
 
+    public static boolean acceptable() {
+        boolean res = false;
+        if (INSTANCE.action.size() < MAX_COUNT) {
+            res = true;
+        }
+        return res;
+    }
+
     public Sprite getSprite(RocketColor rocketColor) {
         return textures.get(rocketColor);
     }
@@ -72,8 +94,9 @@ public class RocketPool {
     }
 
     public void moveReadyToDraw() {
-
-        while (!readyDatas.isEmpty()) {
+        //LAST TIME DRAW
+        setLastDrawTime(System.currentTimeMillis());
+        while (!readyDatas.isEmpty() && acceptable()) {
             ReadyData data = readyDatas.poll();
             Rocket rocket;
             rocket = WorldUtil.makeRocket(data.rocketType, data.rocketColor);

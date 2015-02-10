@@ -18,12 +18,12 @@ import ua.pp.kitson.trf.utils.Constants;
 import ua.pp.kitson.trf.utils.TimeUtils;
 import ua.pp.kitson.trf.utils.WorldUtil;
 
-import static ua.pp.kitson.trf.utils.Constants.WORLD_WIDTH;
-import static ua.pp.kitson.trf.utils.Constants.WORLD_HEIGHT;
 import static ua.pp.kitson.trf.utils.Constants.CANNON_X;
-import static ua.pp.kitson.trf.utils.Constants.CANNON_Y;
 import static ua.pp.kitson.trf.utils.Constants.CANNON_X_MAX;
+import static ua.pp.kitson.trf.utils.Constants.CANNON_Y;
 import static ua.pp.kitson.trf.utils.Constants.SHOOT_VELOCITY;
+import static ua.pp.kitson.trf.utils.Constants.WORLD_HEIGHT;
+import static ua.pp.kitson.trf.utils.Constants.WORLD_WIDTH;
 
 
 /**
@@ -54,14 +54,16 @@ public class FireworksDesctop extends FireworkBaseScreen implements InputProcess
                 while (true) {
                     try {
                         Thread.sleep(Constants.TIME_SLEEP);
-                        if (!world.isLocked()) {
-                            Rocket rocket;
-                            rocket = WorldUtil.makeRocket(RocketType.FIRST,
-                                    RocketColor.random());
-                            float xPos = MathUtils.random(Constants.CANNON_X, CANNON_X_MAX);
-                            float sSpeed = SHOOT_VELOCITY.y * (((WORLD_WIDTH - 2 * CANNON_X) / 2 - xPos) / WORLD_WIDTH);
-                            rocket.setParams(new Vector2(xPos, CANNON_Y), sSpeed, MathUtils.random((int) (SHOOT_VELOCITY.y * 0.75), (int) (SHOOT_VELOCITY.y * 1.25)));
-                            RocketPool.getInstance().addToDrawList(rocket);
+                        if (RocketPool.getInstance().isShown()) {
+                            if (!world.isLocked() && RocketPool.acceptable()) {
+                                Rocket rocket;
+                                rocket = WorldUtil.makeRocket(RocketType.FIRST,
+                                        RocketColor.random());
+                                float xPos = MathUtils.random(Constants.CANNON_X, CANNON_X_MAX);
+                                float sSpeed = SHOOT_VELOCITY.y * (((WORLD_WIDTH - 2 * CANNON_X) / 2 - xPos) / WORLD_WIDTH);
+                                rocket.setParams(new Vector2(xPos, CANNON_Y), sSpeed, MathUtils.random((int) (SHOOT_VELOCITY.y * 0.75), (int) (SHOOT_VELOCITY.y * 1.25)));
+                                RocketPool.getInstance().addToDrawList(rocket);
+                            }
                         }
                     } catch (InterruptedException e) {
 
